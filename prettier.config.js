@@ -8,4 +8,13 @@ export default {
     arrowParens: "avoid",
     htmlWhitespaceSensitivity: "strict",
     singleAttributePerLine: true,
+
+    overrides: [
+        {
+            files: ["**/*.yaml", "**/*.yml"],
+            options: {
+                tabWidth: 2,
+            },
+        },
+    ],
 };
