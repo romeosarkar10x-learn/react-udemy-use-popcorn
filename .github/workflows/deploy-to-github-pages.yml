@@ -18,7 +18,7 @@ jobs:
         run: npm clean-install
 
       - name: Build
-        run: npm build
+        run: npm run build
 
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
