@@ -1,5 +1,6 @@
 .component-movie-details {
     line-height: 1.4;
+    min-width: fit-content;
 
     > button.back {
         position: absolute;
@@ -57,7 +58,7 @@
     }
 
     > section {
-        padding: 2rem;
+        margin: 2rem;
         display: flex;
         flex-direction: column;
         gap: 1.6rem;
@@ -78,10 +79,9 @@
                 color: var(--color-text);
                 border: none;
                 border-radius: 1rem;
-                font-size: 1rem;
+                font-size: 1.25rem;
 
                 padding: 1rem;
-                font-weight: bold;
                 cursor: pointer;
                 transition: all 0.3s;
 

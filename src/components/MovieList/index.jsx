@@ -29,10 +29,10 @@ function Movie({ movie, onSelectMovie }) {
     );
 }
 
-export default function MovieList({ movies, onSelectMovie }) {
+export default function MovieList({ data, onSelectMovie }) {
     return (
         <ul className="component-movie-list">
-            {movies?.map(movie => (
+            {data?.map(movie => (
                 <Movie
                     key={crypto.randomUUID()}
                     movie={movie}

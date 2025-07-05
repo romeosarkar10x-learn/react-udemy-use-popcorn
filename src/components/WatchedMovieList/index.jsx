@@ -2,7 +2,7 @@ import "./index.scss";
 
 import BoxToggleButton from "../BoxToggleButton.jsx";
 
-function WatchedMovie({ watchedMovie }) {
+function WatchedMovie({ watchedMovie, removeFromWatchedMovies }) {
     return (
         <li
             className="watched-movie"
@@ -27,16 +27,24 @@ function WatchedMovie({ watchedMovie }) {
                 <span>⏳</span>
                 <time>{watchedMovie.runtime} minutes</time>
             </div>
-            <button className="remove">⛌</button>
+            <button
+                onClick={() => removeFromWatchedMovies(watchedMovie.imdbID)}
+                className="remove">
+                ⛌
+            </button>
         </li>
     );
 }
 
-export default function WatchedMovieList({ watchedMovies }) {
+export default function WatchedMovieList({ watchedMovies, removeFromWatchedMovies }) {
+    console.log("watchedMovies", watchedMovies);
     return (
         <ul className="component-watched-movie-list">
             {watchedMovies.map(watchedMovie => (
-                <WatchedMovie watchedMovie={watchedMovie} />
+                <WatchedMovie
+                    removeFromWatchedMovies={removeFromWatchedMovies}
+                    watchedMovie={watchedMovie}
+                />
             ))}
         </ul>
     );

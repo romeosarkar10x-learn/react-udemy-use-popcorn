@@ -58,13 +58,15 @@ const tempWatchedData = [
     },
 ];
 
-let req = null;
-
 export default function App() {
     const [query, setQuery] = useState("");
+    /*
     const [movies, setMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    */
+
+    const [movies, setMovies] = useState({ isLoading: false, data: [], id: 0 });
     const [selectedID, setSelectedID] = useState("tt1375666");
     const [watchedMovies, setWatchedMovies] = useState(tempWatchedData);
     const [userRating, setUserRating] = useState(0);
@@ -77,25 +79,36 @@ export default function App() {
         setSelectedID("");
     }
 
-    function onAddWatchedMovie(watchedMovie) {
+    function addToWatchedMovies(watchedMovie) {
         setWatchedMovies(watchedMovies => [...watchedMovies, watchedMovie]);
     }
 
-    function onRemoveWatchedMovie(id) {
-        setWatchedMovies(watchedMovies => watchedMovies.filter(movie => movie.imdbID == id));
+    function removeFromWatchedMovies(id) {
+        setWatchedMovies(watchedMovies => watchedMovies.filter(watchedMovie => watchedMovie.imdbID !== id));
     }
 
     useEffect(
         function () {
-            setErrorMessage("");
+            const id = movies.id + 1;
+
+            setMovies(movies => {
+                const newMovies = structuredClone(movies);
+                newMovies.id++;
+                delete newMovies.errorMessage;
+                return newMovies;
+            });
 
             if (!query) {
-                setMovies([]);
                 return;
             }
 
             async function fetchMovies() {
-                setIsLoading(true);
+                setMovies(movies => {
+                    const newMovies = structuredClone(movies);
+                    newMovies.isLoading = true;
+                    return newMovies;
+                });
+
                 try {
                     const res = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${query}`);
                     const obj = await res.json();
@@ -105,27 +118,62 @@ export default function App() {
                         throw Error(obj.Error);
                     }
 
-                    setMovies(obj.Search);
+                    // setErrorMessage(null);
+                    // setMovies(obj.Search);
+                    setMovies(movies => {
+                        console.log("setMovies", movies.id, id);
+                        if (movies.id != id) {
+                            return;
+                        }
+
+                        const newMovies = structuredClone(movies);
+                        newMovies.isLoading = false;
+                        newMovies.data = obj.Search;
+                        console.log(newMovies);
+                        return newMovies;
+                    });
                 } catch (err) {
-                    setErrorMessage(err.message);
-                } finally {
-                    setIsLoading(false);
+                    setMovies(movies => {
+                        if (movies.id != id) {
+                            return movies;
+                        }
+
+                        const newMovies = structuredClone(movies);
+                        newMovies.isLoading = false;
+                        newMovies.errorMessage = err.message;
+                        return newMovies;
+                    });
                 }
             }
 
+            /*
             if (req) {
                 clearTimeout(req.timeout);
             }
+                */
+
+            if (movies.timeout) {
+                clearTimeout(movies.timeout);
+            }
 
             const timeout = setTimeout(() => {
+                /*
                 req.fetchMovies();
                 req = null;
+                */
+                fetchMovies();
+                setMovies(movies => {
+                    const newMovies = structuredClone(movies);
+                    delete newMovies.timeout;
+                    return newMovies;
+                });
             }, 250);
 
-            req = {
-                timeout,
-                fetchMovies,
-            };
+            setMovies(movies => {
+                const newMovies = structuredClone(movies);
+                newMovies.timeout = timeout;
+                return newMovies;
+            });
         },
         [query],
     );
@@ -142,13 +190,13 @@ export default function App() {
             <Main>
                 <Box>
                     {" "}
-                    {errorMessage ? (
-                        <ErrorMessage message={errorMessage} />
-                    ) : isLoading ? (
+                    {movies.errorMessage ? (
+                        <ErrorMessage message={movies.errorMessage} />
+                    ) : movies.isLoading ? (
                         <Loading />
                     ) : (
                         <MovieList
-                            movies={movies}
+                            data={movies.data}
                             onSelectMovie={onSelectMovie}
                         />
                     )}
@@ -160,15 +208,17 @@ export default function App() {
                             id={selectedID}
                             watchedMovies={watchedMovies}
                             onCloseMovie={onCloseMovie}
-                            onRemoveWatchedMovie={onRemoveWatchedMovie}
-                            onAddWatchedMovie={onAddWatchedMovie}
+                            addToWatchedMovies={addToWatchedMovies}
                             userRating={userRating}
                             setUserRating={setUserRating}
                         />
                     ) : (
                         <>
                             <WatchedSummary watched={watchedMovies} />
-                            <WatchedMovieList watchedMovies={watchedMovies} />
+                            <WatchedMovieList
+                                removeFromWatchedMovies={removeFromWatchedMovies}
+                                watchedMovies={watchedMovies}
+                            />
                         </>
                     )}
                 </Box>

@@ -9,7 +9,7 @@ export default function MovieDetails({
     id,
     watchedMovies,
     onCloseMovie,
-    onAddWatchedMovie,
+    addToWatchedMovies,
     userRating,
     setUserRating,
 }) {
@@ -66,7 +66,7 @@ export default function MovieDetails({
     );
 
     const index = watchedMovies.findIndex(watchedMovie => watchedMovie.imdbID == id);
-    console.log("Index:", index);
+    // console.log("Index:", index);
 
     return movie.isLoading ? (
         <Loading />
@@ -135,7 +135,7 @@ export default function MovieDetails({
                                 <button
                                     className="add-to-list"
                                     onClick={() =>
-                                        onAddWatchedMovie({
+                                        addToWatchedMovies({
                                             imdbID: movie.imdbID,
                                             title: movie.title,
                                             year: movie.year,
@@ -145,7 +145,7 @@ export default function MovieDetails({
                                             userRating: userRating,
                                         })
                                     }>
-                                    Add to list
+                                    ＋ Add to list
                                 </button>
                             )}
                         </>
