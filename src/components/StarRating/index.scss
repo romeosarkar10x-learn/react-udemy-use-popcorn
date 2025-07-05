@@ -1,0 +1,45 @@
+.component-star-rating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+
+    > .stars {
+        display: flex;
+
+        button.star {
+            height: 30px;
+            width: 30px;
+            background-color: inherit;
+            border: none;
+            cursor: pointer;
+
+            > svg {
+                fill: none;
+                stroke: gold;
+                // stroke: rgb(230, 120, 120);
+            }
+
+            &.hovered > svg {
+                fill: rgb(255, 225, 55);
+                stroke: whitesmoke;
+            }
+
+            &.filled > svg {
+                fill: gold;
+                stroke: gold;
+            }
+        }
+    }
+
+    > .rating {
+        margin-left: 2rem;
+        font-size: 1.25rem;
+        color: gold;
+        white-space: nowrap;
+
+        &.hover {
+            color: whitesmoke;
+        }
+    }
+}

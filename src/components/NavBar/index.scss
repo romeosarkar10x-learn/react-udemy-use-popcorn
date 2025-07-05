@@ -1,0 +1,57 @@
+nav.component-nav-bar {
+    display: grid;
+    min-width: fit-content;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    height: 7.2rem;
+    padding: 1rem;
+    background-color: var(--color-primary);
+    border-radius: 0.9rem;
+}
+
+.component-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    user-select: none;
+
+    > .img {
+        font-size: 2rem;
+    }
+
+    > h1 {
+        display: inline;
+    }
+}
+
+.component-search {
+    justify-self: center;
+    border: none;
+    padding: 1.1rem 1.6rem;
+
+    border-radius: 0.7rem;
+    width: 40rem;
+    transition: all 0.3s;
+
+    color: var(--color-text);
+    font-size: 1.25rem;
+    font-family: inherit;
+    background-color: var(--color-primary-light);
+
+    &::placeholder {
+        color: var(--color-text-dark);
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 2.4rem 2.4rem rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+}
+
+.component-num-results {
+    text-align: left;
+    white-space: nowrap;
+}

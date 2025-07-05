@@ -1,0 +1,35 @@
+ul.component-movie-list {
+    > li.movie {
+        display: grid;
+        grid-template-rows: auto auto;
+        grid-template-columns: 5rem 1fr;
+        grid-column-gap: 2.5rem;
+        padding: 1rem;
+        cursor: pointer;
+
+        border-bottom: grey 0.125rem solid;
+
+        &:hover {
+            background-color: rgb(35, 30, 75);
+        }
+
+        > img {
+            width: 100%;
+            height: auto;
+            grid-row: 1 / -1;
+            align-self: center;
+            border-radius: 0.75rem;
+        }
+
+        > h3 {
+            font-size: 1.5rem;
+            align-self: center;
+        }
+
+        > p {
+            gap: 0.5rem;
+            display: flex;
+            align-items: baseline;
+        }
+    }
+}

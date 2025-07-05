@@ -1,0 +1,18 @@
+::-webkit-scrollbar {
+}
+::-webkit-scrollbar-track {
+    background-color: red;
+}
+
+a.imdb-link {
+    color: rgb(233, 207, 251);
+    text-underline-offset: 2px;
+
+    &:hover {
+        color: rgb(210, 153, 251);
+    }
+}
+
+img.poster {
+    border-radius: 0.75rem;
+}
