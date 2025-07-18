@@ -1,19 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { OMDB_API_KEY } from "../../globals.js";
 import "./index.scss";
 
 import StarRating from "../StarRating/index.jsx";
 import Loading from "../Loading/index.jsx";
 
-export default function MovieDetails({
-    id,
-    watchedMovies,
-    onCloseMovie,
-    addToWatchedMovies,
-    userRating,
-    setUserRating,
-}) {
+export default function MovieDetails({ id, watchedMovies, onCloseMovie, addToWatchedMovies }) {
     const [movie, setMovie] = useState({ isLoading: false });
+    const [userRating, setUserRating] = useState(0);
+    const countRatingDecisions = useRef(0);
+
+    useEffect(
+        function () {
+            if (userRating) {
+                console.log("countRating!", countRatingDecisions.current);
+                countRatingDecisions.current++;
+            }
+        },
+        [userRating],
+    );
+
+    useEffect(function () {
+        function escapeListener(event) {
+            if (event.code === "Escape") {
+                onCloseMovie();
+            }
+        }
+
+        document.addEventListener("keydown", escapeListener);
+
+        return function () {
+            document.removeEventListener("keydown", escapeListener);
+        };
+    }, []);
 
     useEffect(
         function () {
@@ -23,7 +42,7 @@ export default function MovieDetails({
                 const res = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}`);
 
                 const movie = await res.json();
-                console.log(movie);
+                // console.log(movie);
 
                 setUserRating(0);
                 setMovie({
@@ -56,7 +75,7 @@ export default function MovieDetails({
             }
 
             const oldTitle = document.title;
-            document.title = `Movie | ${movie.title}`;
+            document.title = `Movie \`${movie.title}\``;
 
             return function () {
                 document.title = oldTitle;
@@ -117,13 +136,10 @@ export default function MovieDetails({
             <section>
                 <div className="rating">
                     {index > -1 ? (
-                        (console.log("Ha ha ha here!"),
-                        (
-                            <StarRating
-                                rating={watchedMovies[index].userRating}
-                                maxRating={10}
-                            />
-                        ))
+                        <StarRating
+                            rating={watchedMovies[index].userRating}
+                            maxRating={10}
+                        />
                     ) : (
                         <>
                             <StarRating
@@ -143,6 +159,7 @@ export default function MovieDetails({
                                             runtime: parseInt(movie.runtime),
                                             imdbRating: parseFloat(movie.imdbRating),
                                             userRating: userRating,
+                                            countRatingDecisions: countRatingDecisions.current,
                                         })
                                     }>
                                     ＋ Add to list

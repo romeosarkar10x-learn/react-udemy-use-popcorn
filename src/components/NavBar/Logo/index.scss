@@ -1,0 +1,15 @@
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    user-select: none;
+
+    > .img {
+        font-size: 2rem;
+    }
+
+    > h1 {
+        display: inline;
+    }
+}

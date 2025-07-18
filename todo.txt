@@ -1,0 +1,1 @@
+for the query component, cancel stale fetch requests! Don't just leave them in the background.

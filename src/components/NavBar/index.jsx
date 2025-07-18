@@ -1,21 +1,27 @@
+import { useRef, useEffect } from "react";
 import "./index.scss";
 
-export function Logo() {
-    return (
-        <div className="component-logo">
-            <span
-                className="img"
-                role="img">
-                🍿
-            </span>
-            <h1>Use-popcorn</h1>
-        </div>
-    );
-}
+import { Logo } from "./Logo/index.jsx";
+import { Settings } from "./Settings/index.jsx";
 
 export function Search({ query, setQuery }) {
+    const dom_input = useRef(null);
+
+    useEffect(function () {
+        dom_input.current.focus();
+
+        document.querySelector("html").addEventListener("keypress", event => {
+            if (event.code === "Slash" && document.activeElement !== dom_input.current) {
+                dom_input.current.focus();
+                event.preventDefault();
+            }
+        });
+    }, []);
+
     return (
         <input
+            ref={dom_input}
+            name="search"
             className="component-search"
             type="text"
             placeholder="Search movies..."
@@ -33,11 +39,12 @@ export function NumResults({ movies }) {
     );
 }
 
-export function Nav({ children }) {
+export function NavBar({ children }) {
     return (
-        <nav className="component-nav-bar">
+        <nav className="component_nav-bar">
             <Logo />
             {children}
+            <Settings />
         </nav>
     );
 }

@@ -37,11 +37,11 @@ function WatchedMovie({ watchedMovie, removeFromWatchedMovies }) {
 }
 
 export default function WatchedMovieList({ watchedMovies, removeFromWatchedMovies }) {
-    console.log("watchedMovies", watchedMovies);
     return (
         <ul className="component-watched-movie-list">
             {watchedMovies.map(watchedMovie => (
                 <WatchedMovie
+                    key={watchedMovie.imdbID}
                     removeFromWatchedMovies={removeFromWatchedMovies}
                     watchedMovie={watchedMovie}
                 />
